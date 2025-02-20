@@ -4,6 +4,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
+
 def perform_upgrade():
     # 初始化Chrome浏览器
     driver = webdriver.Chrome()
@@ -94,6 +95,5 @@ def perform_upgrade():
     driver.quit()
     print("浏览器已关闭")
 
-
 # 调用函数
-#perform_upgrade()
+# perform_upgrade()

@@ -1,11 +1,14 @@
+import time
 from telnetlib import EC
 
 import requests
 from selenium import webdriver
+from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 
 # 初始化Chrome浏览器
 driver = webdriver.Chrome()
+
 
 def is_webpage_accessible(url, retries=3, delay=10):
     for attempt in range(retries):
@@ -34,7 +37,6 @@ if is_webpage_accessible(url):
     driver.refresh()
 else:
     print("由于网页不可访问，无法刷新网页")
-
 
 time.sleep(10)  # 等待页面刷新
 

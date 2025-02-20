@@ -3,7 +3,6 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 
 
-
 def configure_router(wifi_password, admin_password):
     # 初始化Chrome浏览器
     driver = webdriver.Chrome()
@@ -74,6 +73,6 @@ def configure_router(wifi_password, admin_password):
 
 
 # 调用函数
-#wifi_password = "88888888"  # 输入你的WiFi密码
-#admin_password = "88888888"  # 输入你的管理密码
-#configure_router(wifi_password, admin_password)
+# wifi_password = "88888888"  # 输入你的WiFi密码
+# admin_password = "88888888"  # 输入你的管理密码
+# configure_router(wifi_password, admin_password)

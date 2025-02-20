@@ -9,6 +9,7 @@ WIFI_PASSWORD = "88888888"  # 输入你的WiFi密码
 ADMIN_PASSWORD = "88888888"  # 输入你的管理密码
 PRIVATIZATION_URL = "https://www.cxsdwan.com:3443"
 
+
 # 主函数
 def main():
     # 配置路由器
@@ -26,6 +27,7 @@ def main():
     print("开始配置私有化...")
     configure_privatization(ADMIN_PASSWORD, PRIVATIZATION_URL)
     print("私有化配置完成")
+
 
 # 执行主函数
 if __name__ == "__main__":
