@@ -7,7 +7,4 @@
 /dataSources/
 /dataSources.local.xml
 
-.idea
-.idea/vcs.xml
-.idea/workspace.xml
-.idea/modules.xml
+.idea/
