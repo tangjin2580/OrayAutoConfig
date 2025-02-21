@@ -34,7 +34,7 @@ jobs:
       run: pyinstaller --onefile main.py  
 
     - name: Upload .exe
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: OrayAutoConfig.exe
         path: dist/main.exe  # 根据你的主脚本文件名调整路径
