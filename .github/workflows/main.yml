@@ -3,10 +3,10 @@ name: Build .exe with PyInstaller and Create Release
 on:
   push:
     branches:
-      - main  # 或者你想要触发工作流的分支名
+      - master  # 或者你想要触发工作流的分支名
   pull_request:
     branches:
-      - main  # 或者你想要触发工作流的分支名
+      - master  # 或者你想要触发工作流的分支名
   workflow_dispatch:  # 允许手动触发工作流
 
 permissions:
