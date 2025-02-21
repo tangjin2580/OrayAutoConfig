@@ -1,12 +1,12 @@
-name: Build .exe with PyInstaller
+name: Build .exe with PyInstaller and Create Release
 
 on:
   push:
-    branches: 
-      - master  # 或者你想要触发工作流的分支名
+    branches:
+      - main  # 或者你想要触发工作流的分支名
   pull_request:
     branches:
-      - master  # 或者你想要触发工作流的分支名
+      - main  # 或者你想要触发工作流的分支名
   workflow_dispatch:  # 允许手动触发工作流
 
 permissions:
@@ -36,23 +36,21 @@ jobs:
     - name: Build .exe
       run: pyinstaller --onefile main.py
 
-    - name: Upload .exe
-      uses: actions/upload-artifact@v4
-      with:
-        name: OrayAutoConfig.exe
-        path: dist/main.exe  # 根据你的主脚本文件名调整路径
-
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         tag_name: ${{ github.ref_name }}
         release_name: Release ${{ github.ref_name }}
         draft: false
         prerelease: false
 
-    - name: Upload .exe to Release
+    - name: Upload .exe
       uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
         asset_path: dist/main.exe
