@@ -41,22 +41,35 @@ jobs:
       shell: pwsh
       run: |
         # 检索当前最新的版本号标签
-        $current_version = git tag | Where-Object {$_ -match '^v[0-9]+\.[0-9]+\.[0-9]+$'} | Sort-Object -Version | Select-Object -Last 1
+        $tags = git tag | Where-Object {$_ -match '^v[0-9]+\.[0-9]+\.[0-9]+$'}
+        
+        # 使用自定义排序方法
+        $tagVersions = @()
+        foreach ($tag in $tags) {
+            $versionParts = $tag -replace 'v', '' -split '\.'
+            $tagVersions += [PSCustomObject]@{
+                OriginalTag = $tag
+                Major = [int]$versionParts[0]
+                Minor = [int]$versionParts[#citation-1](citation-1)
+                Patch = [int]$versionParts[#citation-2](citation-2)
+            }
+        }
+
+        $latestVersion = $tagVersions | Sort-Object Major, Minor, Patch | Select-Object -Last 1
         
         # 如果没有找到版本号，默认为 v1.0.0
-        if (-not $current_version) {
-            $current_version = "v1.0.0"
+        if (-not $latestVersion) {
+            $latestVersion = [PSCustomObject]@{
+                OriginalTag = 'v1.0.0'
+                Major = 1
+                Minor = 0
+                Patch = 0
+            }
         }
         
-        # 提取版本号的不同部分
-        $version_prefix = $current_version.Substring(0, $current_version.LastIndexOf("."))
-        $version_suffix = [int]$current_version.Substring($current_version.LastIndexOf(".") + 1)
-        
-        # 递增最后一位版本号
-        $new_version_suffix = $version_suffix + 1
-        
-        # 拼接新的版本号
-        $new_version = "$version_prefix.$new_version_suffix"
+        # 生成新的版本号
+        $new_version_suffix = $latestVersion.Patch + 1
+        $new_version = "v$($latestVersion.Major).$($latestVersion.Minor).$new_version_suffix"
 
         Write-Host "new_version=$new_version" | Out-File -FilePath $env:GITHUB_ENV -Append
         Write-Host "生成的新版本号: $new_version"
