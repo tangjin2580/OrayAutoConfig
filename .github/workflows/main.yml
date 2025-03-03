@@ -3,14 +3,14 @@ name: Build .exe with PyInstaller and Create Release
 on:
   push:
     branches:
-      - master  # 或者你想要触发工作流的分支名
+      - master
   pull_request:
     branches:
-      - master  # 或者你想要触发工作流的分支名
-  workflow_dispatch:  # 允许手动触发工作流
+      - master
+  workflow_dispatch:
 
 permissions:
-  contents: write  # 根据需要设置适当的权限
+  contents: write
 
 jobs:
   build-exe:
@@ -18,12 +18,12 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Set up Python
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v3
       with:
-        python-version: '3.x'  # 根据你的项目指定Python版本
+        python-version: '3.x'
 
     - name: Install dependencies
       run: |
@@ -36,14 +36,38 @@ jobs:
     - name: Build .exe
       run: pyinstaller --onefile --add-data "./picture/icon.png;." main.py --name OrayAutoConfig
 
+    - name: Get current version
+      id: get_version
+      run: |
+        # 检索当前最新的版本号标签
+        current_version=$(git tag | grep '^v[0-9]\+\.[0-9]\+\.[0-9]\+$' | sort -V | tail -n 1)
+        
+        # 如果没有找到版本号，默认为 v1.0.0
+        if [ -z "$current_version" ]; then
+          current_version="v1.0.0"
+        fi
+        
+        # 提取版本号的不同部分
+        version_prefix=${current_version%.*}  # v1.0
+        version_suffix=${current_version##*.}   # 0
+        
+        # 递增最后一位版本号
+        new_version_suffix=$((version_suffix + 1))
+        
+        # 拼接新的版本号
+        new_version="${version_prefix}.${new_version_suffix}"
+
+        echo "new_version=$new_version" >> $GITHUB_ENV
+        echo "生成的新版本号: $new_version"
+
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: v1.0.1  # 确保这个标签是唯一的
-        release_name: Release v1.0.1
+        tag_name: ${{ env.new_version }}  # 使用新生成的版本号
+        release_name: Release ${{ env.new_version }}
         draft: false
         prerelease: false
 
@@ -53,6 +77,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: dist/OrayAutoConfig.exe  # 确保路径是正确的
+        asset_path: dist/OrayAutoConfig.exe
         asset_name: OrayAutoConfig.exe
         asset_content_type: application/octet-stream
