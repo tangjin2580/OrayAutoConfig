@@ -34,7 +34,7 @@ jobs:
       run: pip install pyinstaller
 
     - name: Build .exe
-      run: pyinstaller --onefile main.py
+      run: pyinstaller --onefile --add-data "./picture/icon.png;." main.py --name OrayAutoConfig
 
     - name: Create Release
       id: create_release

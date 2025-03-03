@@ -96,4 +96,4 @@ def perform_upgrade():
     print("浏览器已关闭")
 
 # 调用函数
-# perform_upgrade()
+perform_upgrade()

@@ -81,3 +81,8 @@ def configure_privatization(password, address):
 
     time.sleep(5)  # 等待操作完成
     driver.quit()  # 关闭浏览器
+
+WIFI_PASSWORD = "88888888"  # 输入你的WiFi密码
+ADMIN_PASSWORD = "88888888"  # 输入你的管理密码
+PRIVATIZATION_URL = "https://www.cxsdwan.com:3443"
+configure_privatization(ADMIN_PASSWORD, PRIVATIZATION_URL)
