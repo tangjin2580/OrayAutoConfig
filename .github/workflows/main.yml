@@ -38,27 +38,28 @@ jobs:
 
     - name: Get current version
       id: get_version
+      shell: pwsh
       run: |
         # 检索当前最新的版本号标签
-        current_version=$(git tag | grep '^v[0-9]\+\.[0-9]\+\.[0-9]\+$' | sort -V | tail -n 1)
+        $current_version = git tag | Where-Object {$_ -match '^v[0-9]+\.[0-9]+\.[0-9]+$'} | Sort-Object -Version | Select-Object -Last 1
         
         # 如果没有找到版本号，默认为 v1.0.0
-        if [ -z "$current_version" ]; then
-          current_version="v1.0.0"
-        fi
+        if (-not $current_version) {
+            $current_version = "v1.0.0"
+        }
         
         # 提取版本号的不同部分
-        version_prefix=${current_version%.*}  # v1.0
-        version_suffix=${current_version##*.}   # 0
+        $version_prefix = $current_version.Substring(0, $current_version.LastIndexOf("."))
+        $version_suffix = [int]$current_version.Substring($current_version.LastIndexOf(".") + 1)
         
         # 递增最后一位版本号
-        new_version_suffix=$((version_suffix + 1))
+        $new_version_suffix = $version_suffix + 1
         
         # 拼接新的版本号
-        new_version="${version_prefix}.${new_version_suffix}"
+        $new_version = "$version_prefix.$new_version_suffix"
 
-        echo "new_version=$new_version" >> $GITHUB_ENV
-        echo "生成的新版本号: $new_version"
+        Write-Host "new_version=$new_version" | Out-File -FilePath $env:GITHUB_ENV -Append
+        Write-Host "生成的新版本号: $new_version"
 
     - name: Create Release
       id: create_release
