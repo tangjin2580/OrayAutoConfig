@@ -72,7 +72,8 @@ jobs:
         # 生成新的版本号
         $new_version_suffix = $latestVersion.Patch + 1
         $new_version = "v$($latestVersion.Major).$($latestVersion.Minor).$new_version_suffix"
-
+        
+        echo "::set-output name=new_version::$new_version"
         Write-Host "new_version=$new_version" | Out-File -FilePath $env:GITHUB_ENV -Append
         Write-Host "生成的新版本号: $new_version"
 
@@ -82,8 +83,8 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: ${{ env.new_version }}  # 使用新生成的版本号
-        release_name: Release ${{ env.new_version }}
+        tag_name: ${{ steps.get_version.outputs.new_version }}  # 使用新生成的版本号
+        release_name: Release ${{ steps.get_version.outputs.new_version }}  # 发布标题
         draft: false
         prerelease: false
 
