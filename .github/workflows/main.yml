@@ -34,7 +34,7 @@ jobs:
       run: pip install pyinstaller
 
     - name: Build .exe
-      run: pyinstaller --onefile --add-data "./picture/icon.png;." main.py --name OrayAutoConfig
+      run: pyinstaller --onefile --icon "./picture/icon.png;." main.py --name OrayAutoConfig
 
     - name: Get current version
       id: get_version
