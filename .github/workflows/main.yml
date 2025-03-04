@@ -14,7 +14,7 @@ permissions:
 
 jobs:
   build-exe:
-    runs-on: windows-latest
+    runs-on: windows-latest  # 保持使用 Windows 环境
 
     steps:
     - name: Checkout code
@@ -49,7 +49,7 @@ jobs:
             if ($tag -match 'refs/tags/v([0-9]+)\.([0-9]+)\.([0-9]+)') {
                 $tagVersions += [PSCustomObject]@{
                     OriginalTag = $matches[0]
-                    Major = [int]$matches[#citation-1](citation-1)
+                    Major = [int]$matches[#citation-1](citation-1)  # 使用正确的索引
                     Minor = [int]$matches[#citation-2](citation-2)
                     Patch = [int]$matches[#citation-3](citation-3)
                 }
