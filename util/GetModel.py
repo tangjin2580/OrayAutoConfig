@@ -3,7 +3,6 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from util.R300 import r300_configure_router
 from util.AutoConf import configure_router
-8
 
 def GetModel(driver):
     try:
