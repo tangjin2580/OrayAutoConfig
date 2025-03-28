@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - master  # 或者你想要触发工作流的分支名
+      - R300
   pull_request:
     branches:
       - master  # 或者你想要触发工作流的分支名

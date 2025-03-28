@@ -3,6 +3,7 @@ import time
 from util.AutoConf import configure_router
 from util.perform_upgrade import perform_upgrade
 from util.configure_privatization import configure_privatization
+from util.GetModel import GetModel
 
 # 定义常量
 WIFI_PASSWORD = "88888888"  # 输入你的WiFi密码
@@ -12,6 +13,10 @@ PRIVATIZATION_URL = "https://www.cxsdwan.com:3443"
 
 # 主函数
 def main():
+
+    #判断型号
+    print("正在判断型号...")
+
     # 配置路由器
     print("开始配置路由器...")
     configure_router(WIFI_PASSWORD, ADMIN_PASSWORD)
